@@ -6,6 +6,7 @@ import Navigation from "./components/navigation/Navigation";
 import Logo from "./components/logo/Logo";
 import ImageLinkForm from "./components/imageLinkForm/ImageLinkForm";
 import Rank from './components/rank/Rank';
+import FaceRecognition from "./components/faceRecognition/FaceRecognition";
 
 const app = new Clarifai.App({
     apiKey: 'ef1582b0063d4b87a1e2e624f79c61e9'
@@ -25,27 +26,33 @@ const particlesOptions =
     };
 
 class App extends React.Component {
-    constructor(){
+    constructor() {
         super();
-        this.state ={
-            input: ''
+        this.state = {
+            input: '',
+            imageUrl:''
         }
     }
 
-    onInputChange = (event) =>{
+    onInputChange = (event) => {
         console.log(event.target.value);
     };
-    onButtonSubmit = () =>{
-        app.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
-            function(response) {
-               console.log(response);
-            },
-            function(err) {
-                // there was an error
-            }
-        );
+    onButtonSubmit = () => {
+        this.setState({imageUrl:input})
+        app.models.predict(
+            Clarifai.COLOR_MODEL,
+            "https://samples.clarifai.com/face-det.jpg")
+            .then(
+                function (response) {
+                    console.log(response);
+                },
+                function (err) {
+                    // there was an error
+                }
+            );
 
     };
+
     render() {
         return (
             <div className="App">
@@ -53,7 +60,8 @@ class App extends React.Component {
                 <Navigation/>
                 <Logo/>
                 <Rank/>
-                <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+                <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmi     t={this.onButtonSubmit}/>
+                <FaceRecognition/>
             </div>
         );
     }
