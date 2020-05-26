@@ -25,11 +25,11 @@ class Signin extends Component {
                 password: this.state.signInPassword
             })
         })
-            .then(res => {
-                if (res.ok) {
+            .then(response => response.json())
+            .then(user => {
+                if(user.id){
+                    this.props.loadUser(user);
                     this.props.onRouteChange('home');
-                }else{
-                    res.json().then(alert) ;
                 }
             })
     }
